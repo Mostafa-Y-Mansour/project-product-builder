@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   className?: string;
   width?: "w-full" | "w-fit";
@@ -14,7 +14,9 @@ const Button: FC<IProps> = ({
 }) => {
   return (
     <button
-      className={`${className} p-2  ${width} rounded-md text-white`}
+      className={`p-2 rounded-md text-white ${width} ${
+        className || "bg-indigo-500 hover:bg-indigo-700"
+      }`}
       {...rest}
     >
       {children}
