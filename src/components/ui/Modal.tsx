@@ -52,7 +52,7 @@ const Modal: FC<IProps> = ({ isOpen, closeModal, title, children }) => {
                   {title && (
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-medium leading-6 text-gray-900"
+                      className="text-3xl  font-bold leading-6 text-gray-900"
                     >
                       {title}
                     </Dialog.Title>
