@@ -1,34 +1,51 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import ProductCard from "./components/ProductCard";
 import Button from "./components/ui/Button";
 import Modal from "./components/ui/Modal";
 import { formInputsList, productList } from "./data";
 import Input from "./components/ui/Input";
+import { IProduct } from "./interfaces";
 
 function App() {
   /* ----- State ----- */
+  const [product, setProduct] = useState<IProduct>({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+    colors: [],
+    category: {
+      name: "",
+      imageURL: "",
+    },
+  });
   const [isOpen, setIsOpen] = useState(true);
 
   /* ----- Handler ----- */
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
+  const closeModal = () => setIsOpen(false);
+  const openModal = () => setIsOpen(true);
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
+    setProduct({ ...product, [name]: value });
+  };
 
   /* ----- Renders ----- */
   const renderProductList = productList.map((product) => (
     <ProductCard key={product.id} product={product} />
   ));
 
-  const renderFormInput = formInputsList.map((input) => (
+  const renderFormInputList = formInputsList.map((input) => (
     <div className="w-full flex flex-col">
       <label className="text-xl font-bold" htmlFor={input.id}>
         {input.label}
       </label>
-      <Input id={input.id} type={input.type} name={input.name} />
+      <Input
+        id={input.id}
+        type={input.type}
+        name={input.name}
+        value={product[input.name]}
+        onChange={onChangeHandler}
+      />
     </div>
   ));
 
@@ -39,8 +56,15 @@ function App() {
       </Button>
       {/* modal */}
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add Product">
-        <form className="space-y-3">
-          {renderFormInput}
+        <form
+          onSubmit={(e) => {
+            // to fix an issue with the modal being open after submit
+            e.preventDefault();
+            console.log(product);
+          }}
+          className="space-y-3"
+        >
+          {renderFormInputList}
           <div className="flex gap-2 items-center justify-between">
             <Button
               className="px-10 bg-emerald-500 hover:bg-emerald-700"

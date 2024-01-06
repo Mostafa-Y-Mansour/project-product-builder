@@ -9,7 +9,6 @@ interface IProps {
 }
 
 const ProductCard: FC<IProps> = ({ product }) => {
-  console.log(product);
   return (
     <div className="max-w-sm md:max-w-lg mx-auto  border rounded-md p-2 flex flex-col">
       <Image
